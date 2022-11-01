@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
 from formulas import main
+import os
+
+PORT = os.environ.get('PORT')
 
 app = Flask(__name__)
 
@@ -48,8 +51,9 @@ def index():
 
 
 if __name__ == '__main__':
+    port = PORT if type(PORT) == type(0) else 5000
     # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=5000, debug=True)
+    app.run(threaded=True, port=port, debug=True)
 
     # to production
     # from waitress import serve
