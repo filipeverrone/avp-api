@@ -1,30 +1,11 @@
-from waitress import serve
 from flask import Flask, request, jsonify, render_template
-from formulas import main
-import os
 from json import loads
+from formulas import main
+from validate import validate_type_request
+from utils import convert_to_float, take_results_positions
+from server import serve_app
 
 app = Flask(__name__)
-
-
-def convert_to_float(num):
-    if not num:
-        return None
-    return float(num)
-
-
-def take_results_positions(data: dict):
-    i = data['i']
-    n = data['n']
-    P = data['P']
-    R = data['R']
-    S = data['S']
-
-    show = ''
-    for key in data.keys():
-        show += f'<br>{key} = {data[key]}</br>'
-
-    return show + '<br />'
 
 
 @app.route('/main/', methods=['GET'])
@@ -60,6 +41,7 @@ def respond(data=None):
 @app.route('/', methods=('GET', 'POST'))
 def index():
     main_result = ''
+    message = ''
 
     if request.method == 'POST':
         i = request.form['i']
@@ -81,22 +63,24 @@ def index():
         }
         data[triangle_key] = triangle_value
 
-        response = respond(data)
+        is_valid = validate_type_request(data)
+        print(f'is_valid = {is_valid}')
+        if is_valid != None:
+            message = f'invalid {is_valid} field value!'
+            main_result = ''
+        else:
+            response = respond(data)
 
-        results = loads(response.response[0])['DATA']
-        print(f'results: {results}')
-        main_result = take_results_positions(results)
+            results = loads(response.response[0])['DATA']
+            print(f'results: {results}')
+            main_result = take_results_positions(results)
 
-    return render_template('home.html', results=main_result)
+    return render_template(
+        'home.html',
+        results=main_result,
+        message=message
+    )
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app_env = os.environ.get("APP_ENV", 'prod')
-
-    if app_env == 'dev':
-        # Threaded option to enable multiple instances for multiple user access support
-        app.run(threaded=True, port=port, host='0.0.0.0')
-    else:
-        # to production
-        serve(app, host="0.0.0.0", port=port)
+    serve_app(app)

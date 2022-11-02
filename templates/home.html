@@ -2,6 +2,20 @@
 <html lang="en">
   <head>
     <title>AVP API</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript">
+      function isHidden() {
+        const message = '{{message}}';
+        if (message.length) {
+          document.getElementById("message").style.visibility="visible";
+        } else {
+          document.getElementById("message").style.visibility="hidden";
+        }
+      }
+    </script>
+
     <style>
       html,
       body {
@@ -21,11 +35,15 @@
         justify-content: center;
       }
 
-      p {
+      p, h1 {
         text-align: center;
       }
 
+      form {
+        overflow: hidden;
+      }
       input {
+        text-align: right;
         width: 16.5rem;
         height: 2rem;
       }
@@ -46,6 +64,7 @@
         color: #dfdfdf;
         flex-direction: column;
         justify-content: center;
+        clear: both;
       }
 
       .results {
@@ -53,6 +72,11 @@
         background-color: #779abc;
         color: #010203;
         width: 16rem;
+      }
+
+      .message {
+        background-color: #cd1234;
+        color: #f0f0f0
       }
     </style>
   </head>
@@ -93,8 +117,13 @@
                 class="input-triangle" />
 
         <br></br>
+        <div id="message" class="message">
+          {{ message }}
+        </div>
+
+        <br>
         <div>
-          <button type="submit">Submit</button>
+          <button type="submit" onclick="isHidden()">Submit</button>
         </div>
       </form>
 
