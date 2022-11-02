@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify, render_template
 from json import loads
-from formulas import main
-from validate import validate_type_request
-from utils import convert_to_float, take_results_positions
-from server import serve_app
+from src.formulas import main
+from src.validate import validate_type_request
+from src.utils import convert_to_float, take_results_positions
+from src.server import serve_app
 
 app = Flask(__name__)
 

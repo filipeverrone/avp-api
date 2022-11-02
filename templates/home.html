@@ -35,6 +35,10 @@
         justify-content: center;
       }
 
+      a {
+        color: #00beff;
+      }
+
       p, h1 {
         text-align: center;
       }
@@ -78,68 +82,83 @@
         background-color: #cd1234;
         color: #f0f0f0
       }
+
+      .image {
+        width: 2rem;
+        background-color: #f0f0f0;
+        border-radius: 100%;
+        display: flex;
+        margin-right: 0.5rem;
+      }
     </style>
   </head>
   <body>
     <div class="main">
-      <div>
-        <h1>Economic Engineering</h1>
+      <div class="main">
+        <div>
+          <h1>Economic Engineering</h1>
+        </div>
+        
+        <form method="post">
+          <div>
+            <label for="interest-rate">Interest rate (i) in percent</label>
+          </div>
+          <input type="text" name="i" required
+          placeholder="i (interest rate) [%]"
+          value="{{ request.form['i'] }}" />
+          <br></br>
+          
+          <div>
+            <label for="number-of-periods">Number of Periods</label>
+          </div>
+          <input type="number" name="n" required
+          placeholder="n (number of periods) [int]"
+          value="{{ request.form['n'] }}" />
+          
+          <br></br>
+          <div>
+            <label for="triangle">Equivalent Triangle value</label>
+          </div>
+          <select name="triangle_key" id="triangle" required class="select">
+            <option value="P">P</option>
+            <option value="R">R</option>
+            <option value="S">S</option>
+          </select>
+          <input type="text" name="triangle_value" required
+          placeholder="Value of triangle key selected [float]"
+          value="{{ request.form['triangle_value'] }}"
+          class="input-triangle" />
+          
+          <br></br>
+          <div id="message" class="message">
+            {{ message }}
+          </div>
+          
+          <br>
+          <div>
+            <button type="submit" onclick="isHidden()">Submit</button>
+          </div>
+        </form>
+        
+        <div>
+          <div class="results">{{ results|safe }}</div>
+        </div>
       </div>
 
-      <form method="post">
-        <div>
-          <label for="interest-rate">Interest rate (i) in percent</label>
+      <footer>
+        <div style="align-items: center">
+          <div class="image" style="height: 2rem">
+            <a href="https://github.com/filipeverrone/avp-api" target="_blank" style="height: 2rem">
+              <img src="static/github.svg" alt="github" height="32">
+            </a>
+          </div>
+          <p>Powered by
+            <a href="https://www.linkedin.com/in/filipevlima" target="_blank">
+              Filipe Verrone de Lima
+            </a>
+          </p>
         </div>
-        <input type="text" name="i" required
-                placeholder="i (interest rate) [%]"
-                value="{{ request.form['i'] }}" />
-        <br></br>
-
-        <div>
-          <label for="number-of-periods">Number of Periods</label>
-        </div>
-        <input type="number" name="n" required
-                placeholder="n (number of periods) [int]"
-                value="{{ request.form['n'] }}" />
-
-        <br></br>
-        <div>
-          <label for="triangle">Equivalent Triangle value</label>
-        </div>
-        <select name="triangle_key" id="triangle" required class="select">
-          <option value="P">P</option>
-          <option value="R">R</option>
-          <option value="S">S</option>
-        </select>
-        <input type="text" name="triangle_value" required
-                placeholder="Value of triangle key selected [float]"
-                value="{{ request.form['triangle_value'] }}"
-                class="input-triangle" />
-
-        <br></br>
-        <div id="message" class="message">
-          {{ message }}
-        </div>
-
-        <br>
-        <div>
-          <button type="submit" onclick="isHidden()">Submit</button>
-        </div>
-      </form>
-
-      <div>
-        <div class="results">{{ results|safe }}</div>
-      </div>
-
-      <!-- <div>
-        <h3>Use /main/ passing values of n, i and P, R or S</h3>
-      </div>
-
-      <div>
-        <p>
-          Obs.: The i value must be in percent (for example, 25 if your i is 25%)
-        </p>
-      </div> -->
+      </footer>
     </div>
   </body>
 </html>
