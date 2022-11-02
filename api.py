@@ -1,3 +1,4 @@
+from waitress import serve
 from flask import Flask, request, jsonify, render_template
 from formulas import main
 import os
@@ -91,9 +92,11 @@ def index():
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=port, host='0.0.0.0')
+    app_env = os.environ.get("APP_ENV", 'prod')
 
-    # to production
-    # from waitress import serve
-    # serve(app, host="0.0.0.0", port=8080)
+    if app_env == 'dev':
+        # Threaded option to enable multiple instances for multiple user access support
+        app.run(threaded=True, port=port, host='0.0.0.0')
+    else:
+        # to production
+        serve(app, host="0.0.0.0", port=port)
