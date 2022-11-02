@@ -51,7 +51,7 @@ def index():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=port, host='0.0.0.0')
+    app.run(port=port, host='0.0.0.0')
 
     # to production
     # from waitress import serve
