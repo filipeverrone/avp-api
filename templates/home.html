@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>AVP API</title>
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      p {
+        text-align: center;
+      }
+
+      input {
+        width: 16.5rem;
+        height: 2rem;
+      }
+
+      .input-triangle {
+        width: 14rem !important;
+      }
+
+      .select {
+        height: 2rem;
+      }
+
+      .main {
+        height: 100vh;
+        align-items: center;
+        overflow: hidden;
+        background-color: #002345;
+        color: #dfdfdf;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .results {
+        margin: 1rem 0;
+        background-color: #779abc;
+        color: #010203;
+        width: 30%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div>
+        <h1>Economic Engineering</h1>
+      </div>
+
+      <form method="post">
+        <div>
+          <label for="interest-rate">Interest rate (i) in percent</label>
+        </div>
+        <input type="text" name="i" required
+                placeholder="i (interest rate) [%]"
+                value="{{ request.form['i'] }}" />
+        <br></br>
+
+        <div>
+          <label for="number-of-periods">Number of Periods</label>
+        </div>
+        <input type="number" name="n" required
+                placeholder="n (number of periods) [int]"
+                value="{{ request.form['n'] }}" />
+
+        <br></br>
+        <div>
+          <label for="triangle">Equivalent Triangle value</label>
+        </div>
+        <select name="triangle_key" id="triangle" required class="select">
+          <option value="P">P</option>
+          <option value="R">R</option>
+          <option value="S">S</option>
+        </select>
+        <input type="text" name="triangle_value" required
+                placeholder="Value of triangle key selected [float]"
+                value="{{ request.form['triangle_value'] }}"
+                class="input-triangle" />
+
+        <br></br>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+
+      <div>
+        <div class="results">{{ results|safe }}</div>
+      </div>
+
+      <!-- <div>
+        <h3>Use /main/ passing values of n, i and P, R or S</h3>
+      </div>
+
+      <div>
+        <p>
+          Obs.: The i value must be in percent (for example, 25 if your i is 25%)
+        </p>
+      </div> -->
+    </div>
+  </body>
+</html>

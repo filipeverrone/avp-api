@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from formulas import main
 import os
+from json import loads
 
 app = Flask(__name__)
 
@@ -11,13 +12,34 @@ def convert_to_float(num):
     return float(num)
 
 
+def take_results_positions(data: dict):
+    i = data['i']
+    n = data['n']
+    P = data['P']
+    R = data['R']
+    S = data['S']
+
+    show = ''
+    for key in data.keys():
+        show += f'<br>{key} = {data[key]}</br>'
+
+    return show + '<br />'
+
+
 @app.route('/main/', methods=['GET'])
-def respond():
-    P = request.args.get("P", None)
-    R = request.args.get("R", None)
-    S = request.args.get("S", None)
-    n = request.args.get("n", None)
-    i = request.args.get("i", None)
+def respond(data=None):
+    if not data:
+        P = request.args.get("P", None)
+        R = request.args.get("R", None)
+        S = request.args.get("S", None)
+        n = request.args.get("n", None)
+        i = request.args.get("i", None)
+    else:
+        i = data['i']
+        n = data['n']
+        P = data['P']
+        R = data['R']
+        S = data['S']
 
     response = {}
 
@@ -34,18 +56,37 @@ def respond():
     return jsonify(response)
 
 
-@app.route('/')
+@app.route('/', methods=('GET', 'POST'))
 def index():
-    return '''
-        <div>
-            <h1>Economic Engineering</h1>
-            <h2>Use /main/ passing values of n, i and P, R or S</h2>
-            <h3>To convert i, use /convert</h3>
-            <p>
-                Obs.: The i value must be in percent (for example, 25 if your i is 25%)
-            </p>
-        </div>
-    '''
+    main_result = ''
+
+    if request.method == 'POST':
+        i = request.form['i']
+        n = request.form['n']
+        triangle_key = request.form['triangle_key']
+        triangle_value = request.form['triangle_value']
+
+        print(f'i = {i}')
+        print(f'n = {n}')
+        print(f'triangle_key = {triangle_key}')
+        print(f'triangle_value = {triangle_value}')
+
+        data = {
+            'i': i,
+            'n': n,
+            'P': None,
+            'R': None,
+            'S': None,
+        }
+        data[triangle_key] = triangle_value
+
+        response = respond(data)
+
+        results = loads(response.response[0])['DATA']
+        print(f'results: {results}')
+        main_result = take_results_positions(results)
+
+    return render_template('home.html', results=main_result)
 
 
 if __name__ == '__main__':
