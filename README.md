@@ -8,7 +8,6 @@
 python3 -m venv venv/
 source venv/bin/activate
 pip3 install -r requirements.txt
-
 ```
 
 2. create a .env file with the keys below:
@@ -32,4 +31,4 @@ deactivate
 
 ## Access heroku hosted website
 
-[Website](fit-avp-api.herokuapp.com)
+[Website](https://fit-avp-api.herokuapp.com)
