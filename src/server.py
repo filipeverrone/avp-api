@@ -4,8 +4,7 @@ from waitress import serve
 
 def serve_app(app):
     port = int(environ.get("PORT", 5000))
-    # app_env = environ.get("APP_ENV", 'prod')
-    app_env = 'dev'
+    app_env = environ.get("APP_ENV", 'prod')
 
     if app_env == 'dev':
         # Threaded option to enable multiple instances for multiple user access support
