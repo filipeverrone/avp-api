@@ -98,12 +98,51 @@
         <div>
           <h1>Economic Engineering</h1>
         </div>
-
-        <a href="equivalent-triangle">
-          <button>
-            Estimate Equivalent Triangle
-          </button>
-        </a>
+        
+        <form method="post">
+          <div>
+            <label for="interest-rate">Interest rate (i) in percent</label>
+          </div>
+          <input type="text" name="i" required
+          placeholder="i (interest rate) [%]"
+          value="{{ request.form['i'] }}" />
+          <br></br>
+          
+          <div>
+            <label for="number-of-periods">Number of Periods</label>
+          </div>
+          <input type="number" name="n" required
+          placeholder="n (number of periods) [int]"
+          value="{{ request.form['n'] }}" />
+          
+          <br></br>
+          <div>
+            <label for="triangle">Equivalent Triangle value</label>
+          </div>
+          <select name="triangle_key" id="triangle" required class="select">
+            <option value="P">P</option>
+            <option value="R">R</option>
+            <option value="S">S</option>
+          </select>
+          <input type="text" name="triangle_value" required
+          placeholder="Value of triangle key selected [float]"
+          value="{{ request.form['triangle_value'] }}"
+          class="input-triangle" />
+          
+          <br></br>
+          <div id="message" class="message">
+            {{ message }}
+          </div>
+          
+          <br>
+          <div>
+            <button type="submit" onclick="isHidden()">Submit</button>
+          </div>
+        </form>
+        
+        <div>
+          <div class="results">{{ results|safe }}</div>
+        </div>
       </div>
 
       <footer>

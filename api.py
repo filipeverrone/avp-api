@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, url_for
 from json import loads
 from src.formulas import main
 from src.validate import validate_type_request
@@ -38,8 +38,8 @@ def respond(data=None):
     return jsonify(response)
 
 
-@app.route('/', methods=('GET', 'POST'))
-def index():
+@app.route('/equivalent-triangle', methods=['GET', 'POST'])
+def equivalent_triangle():
     main_result = ''
     message = ''
 
@@ -76,10 +76,15 @@ def index():
             main_result = take_results_positions(results)
 
     return render_template(
-        'home.html',
+        'equivalent_triangle.html',
         results=main_result,
-        message=message
+        message=message,
     )
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('home.html', url_for=url_for)
 
 
 if __name__ == '__main__':
