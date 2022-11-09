@@ -101,7 +101,7 @@ def compose_rate_convert():
             i = float(i)
 
             if from_param == to_param:
-                main_result = f'<br>rate by {to_param}: {i}%</br>'
+                main_result = f'<br>rate by {to_param}: {i}%</br><br />'
             else:
                 n = rate_conversion(
                     RateConvertEnum[from_param], RateConvertEnum[to_param])
