@@ -25,3 +25,9 @@ def validate_type_request(data: dict):
     if triangle == None:
         return 'triangle value'
     return None
+
+
+def validate_rate(i):
+    if not match(r'^(([0-9]*[.])?[0-9]+)$', str(i)):
+        return False
+    return True

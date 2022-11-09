@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify, render_template, url_for
 from json import loads
-from src.formulas import main
-from src.validate import validate_type_request
-from src.utils import convert_to_float, take_results_positions
+from src.formulas import main, compose_rate_equivalence_from_year, compose_rate_equivalence_from_month
+from src.validate import validate_type_request, validate_rate
+from src.utils import convert_to_float, take_results_positions, rate_conversion, RateConvertEnum
 from src.server import serve_app
 
 app = Flask(__name__)
@@ -79,6 +79,46 @@ def equivalent_triangle():
         'equivalent_triangle.html',
         results=main_result,
         message=message,
+    )
+
+
+@app.route('/compose-rate-convert', methods=['GET', 'POST'])
+def compose_rate_convert():
+    main_result = ''
+    message = ''
+
+    if request.method == 'POST':
+        i = request.form['i']
+        from_param = request.form['from_param']
+        to_param = request.form['to_param']
+
+        print(f'i = {i}')
+        print(f'from_param = {from_param}')
+        print(f'to_param = {to_param}')
+
+        valid_rate = validate_rate(i)
+        if valid_rate:
+            i = float(i)
+
+            if from_param == to_param:
+                main_result = f'<br>rate by {to_param}: {i}%</br>'
+            else:
+                n = rate_conversion(
+                    RateConvertEnum[from_param], RateConvertEnum[to_param])
+
+                main_result = f'<br>rate by {from_param}: {i}%</br>'
+                if from_param == RateConvertEnum.month.name:
+                    main_result += f'<br>rate by {to_param}: {compose_rate_equivalence_from_month(i, n)}%</br><br />'
+                else:
+                    main_result += f'<br>rate by {to_param}: {compose_rate_equivalence_from_year(i, n)}%</br><br />'
+        else:
+            message = 'Invalid rate value'
+            main_result = ''
+
+    return render_template(
+        'compose_rate_convert.html',
+        results=main_result,
+        message=message
     )
 
 

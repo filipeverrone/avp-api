@@ -125,7 +125,7 @@
       
         <div class="content">
           <div class="title">
-            <h2>Equivalent Triangle</h2>
+            <h2>Compose Rate Convert</h2>
           </div>
           <form method="post">
             <div>
@@ -137,27 +137,28 @@
             <br></br>
             
             <div>
-              <label for="number-of-periods">Number of Periods</label>
+              <label for="from-param">From Period</label>
             </div>
-            <input type="number" name="n" required
-            placeholder="n (number of periods) [int]"
-            value="{{ request.form['n'] }}" />
-            
-            <br></br>
-            <div>
-              <label for="triangle">Equivalent Triangle value</label>
-            </div>
-            <select name="triangle_key" id="triangle" required class="select">
-              <option value="P">P</option>
-              <option value="R">R</option>
-              <option value="S">S</option>
+            <select name="from_param" id="from-param" required class="select">
+              <option value="month">Month</option>
+              <option value="year">Year</option>
             </select>
-            <input type="text" name="triangle_value" required
-            placeholder="Value of triangle key selected [float]"
-            value="{{ request.form['triangle_value'] }}"
-            class="input-triangle" />
-            
             <br></br>
+
+            <div>
+              <label for="to-param">To Period</label>
+            </div>
+            <select name="to_param" id="to-param" required class="select">
+              <option value="month">Month</option>
+              <option value="bimester">Bimester</option>
+              <option value="trimester">Trimester</option>
+              <option value="four_month">Four month</option>
+              <option value="five_month">Five month</option>
+              <option value="semester">Semester</option>
+              <option value="year">Year</option>
+            </select>            
+            <br></br>
+
             <div id="message" class="message">
               {{ message }}
             </div>

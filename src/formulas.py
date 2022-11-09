@@ -1,9 +1,18 @@
-def get_S_from_R(i, n, R): return R * (((1 + i) ** n) - 1) / i
-def get_S_from_P(i, n, P): return P * (1 + i) ** n
-def get_P_from_S(i, n, S): return S / ((1 + i) ** n)
-def get_P_from_R(i, n, R): return R * ((1 - (1 / ((1 + i) ** n))) / i)
-def get_R_from_P(i, n, P): return P / ((1 - (1 / ((1 + i) ** n))) / i)
-def get_R_from_S(i, n, S): return S * i / (((1 + i) ** n) - 1)
+from src.utils import format_float
+
+
+def get_S_from_R(i, n, R): return format_float(R * (((1 + i) ** n) - 1) / i)
+def get_S_from_P(i, n, P): return format_float(P * (1 + i) ** n)
+def get_P_from_S(i, n, S): return format_float(S / ((1 + i) ** n))
+
+
+def get_P_from_R(i, n, R): return format_float(
+    R * ((1 - (1 / ((1 + i) ** n))) / i))
+def get_R_from_P(i, n, P): return format_float(
+    P / ((1 - (1 / ((1 + i) ** n))) / i))
+
+
+def get_R_from_S(i, n, S): return format_float(S * i / (((1 + i) ** n) - 1))
 
 
 def main(
@@ -52,3 +61,11 @@ def main(
         'P': P,
         'R': R,
     }
+
+
+def compose_rate_equivalence_from_month(i: float, n: float):
+    return format_float((((1 + i / 100) ** n) - 1) * 100)
+
+
+def compose_rate_equivalence_from_year(i: float, n: float):
+    return format_float((((1 + i / 100) ** (1 / n)) - 1) * 100)
